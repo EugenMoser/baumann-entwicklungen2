@@ -1,0 +1,56 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Product {
+  product_id Int @id @default(autoincrement())
+  prio Int
+  category String
+  product_name String
+  product_description1 String
+  product_description2 String
+  product_description3 String
+  product_description4 String
+  product_material String
+  product_imagepath_small String
+  product_imagepath_big1 String
+  product_imagepath_big2 String
+  product_imagepath_big3 String
+  
+}
+
+model Article {
+  article_id Int @id @default(autoincrement())
+  product_id Int
+  article_number String
+  article_prio Int
+  article_name String
+  article_description String
+  article_description1 String
+  article_description2 String
+  article_description3  String
+  vpe1 String
+  vpe2 String
+  vpe3 String
+  vpe4 String
+
+}
+
+model Color {
+  color_id String @unique
+  color_name String
+  color_code String
+}
+
+model Product_Color_Connection {
+  product_id Int @id 
+  color_id String
+  color_suffix Int
+}
