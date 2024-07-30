@@ -8,6 +8,7 @@ function Test({ products }: TestProps): JSX.Element {
   return (
     <>
       <h1>TEST</h1>
+      <p>{products}</p>
       {/* <ul>
         {promisedProducts.map((product, index) => (
           <li key={index}>
