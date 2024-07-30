@@ -23,6 +23,8 @@ model Product {
   product_imagepath_big1 String
   product_imagepath_big2 String
   product_imagepath_big3 String
+  article Article[]
+  product_color_connection Product_Color_Connection[]
   
 }
 
@@ -40,6 +42,7 @@ model Article {
   vpe2 String
   vpe3 String
   vpe4 String
+  product Product @relation(fields: [product_id], references: [product_id])
 
 }
 
@@ -47,10 +50,14 @@ model Color {
   color_id String @unique
   color_name String
   color_code String
+  product_color_connection Product_Color_Connection[]
 }
 
 model Product_Color_Connection {
-  product_id Int @id 
-  color_id String
+  color_id String 
+  product_id Int 
   color_suffix Int
+  product Product @relation(fields: [product_id], references: [product_id])
+  color Color @relation(fields: [color_id], references: [color_id]) 
+  @@id([product_id, color_id])
 }
