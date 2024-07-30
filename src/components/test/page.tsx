@@ -1,11 +1,10 @@
 'use client';
 interface TestProps {
-  products: any[];
+  products: string | undefined;
 }
 
 function Test({ products }: TestProps): JSX.Element {
-  console.log('products', products ? products : 'leck mich');
-
+  console.log('products at client', products);
   return (
     <>
       <h1>TEST</h1>

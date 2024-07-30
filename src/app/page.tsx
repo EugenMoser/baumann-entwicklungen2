@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import axios from 'axios';
 
 import { getAll } from '@/lib/endpoints';
@@ -12,11 +10,18 @@ const getItems = async () => {
 };
 
 export default async function Home({ props }: any): Promise<JSX.Element> {
-  const products: any = await getItems();
+  // const products: any = await getItems();
+  function getBaseUrl() {
+    return (
+      process.env.NEXT_PUBLIC_SITE_URL ??
+      process.env.NEXT_PUBLIC_VERCEL_URL
+    );
+  }
+
   return (
     <>
       <h2>Home Page</h2>
-      <Test products={products} />
+      <Test products={getBaseUrl()} />
     </>
   );
 }
