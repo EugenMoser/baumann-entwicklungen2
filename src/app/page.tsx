@@ -1,27 +1,26 @@
+import { MouseEventHandler, Suspense } from 'react';
+
 import axios from 'axios';
 
 import { getAll } from '@/lib/endpoints';
 
-import Test from '../components/test/page';
+import HomePage from './container/home-page/page';
 
 const getItems = async () => {
-  const data = await axios(getAll);
+  const { data } = await axios(getAll);
   return data.data;
 };
 
-export default async function Home({ props }: any): Promise<JSX.Element> {
-  // const products: any = await getItems();
-  function getBaseUrl() {
-    return (
-      process.env.NEXT_PUBLIC_SITE_URL ??
-      process.env.NEXT_PUBLIC_VERCEL_URL
-    );
-  }
+export default async function Home(): Promise<JSX.Element> {
+  const allProducts: any = await getItems();
+
+  if (!allProducts) return <h2>msgSiteLoadingError</h2>;
 
   return (
-    <>
-      <h2>Home Page</h2>
-      <Test products={getBaseUrl()} />
-    </>
+    <main>
+      <Suspense fallback={<h1>Loading..</h1>}>
+        <HomePage />
+      </Suspense>
+    </main>
   );
 }

@@ -1,14 +1,25 @@
 'use client';
-interface TestProps {
-  products: string | undefined;
-}
 
+import {
+  Color,
+  Product,
+} from '@/src/common/types';
+
+interface TestProps {
+  products: Product[];
+}
 function Test({ products }: TestProps): JSX.Element {
   console.log('products at client', products);
   return (
     <>
       <h1>TEST</h1>
-      <p>{products}</p>
+      <ul>
+        {products.map((product: Product, index: number) => (
+          <li key={index}>
+            {product.colors.map((color: Color) => color.color_suffix)}
+          </li>
+        ))}
+      </ul>
       {/* <ul>
         {promisedProducts.map((product, index) => (
           <li key={index}>
