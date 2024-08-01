@@ -25,8 +25,7 @@ model Product {
   product_imagepath_big3 String
   article Article[]
   product_color_connection Product_Color_Connection[]
-  
-}
+  }
 
 model Article {
   article_id Int @id @default(autoincrement())
@@ -43,7 +42,6 @@ model Article {
   vpe3 String
   vpe4 String
   product Product @relation(fields: [product_id], references: [product_id])
-
 }
 
 model Color {
