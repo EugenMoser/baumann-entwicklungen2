@@ -1,5 +1,7 @@
 'use client';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import {
+  AppRouterInstance,
+} from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
 
 import { strings } from '@/src/constants/strings';
@@ -18,12 +20,12 @@ function HomePage({}: HomePageProps): JSX.Element {
 
       <p className='leading-6'>{strings.companyDescription}</p>
 
-      <h3 className='flex justify-center my-8 mb-5'>
+      <h3 className='flex justify-center text-3xl my-8 mb-5'>
         {strings.companyOurAreas}
       </h3>
 
       <ul className='flex flex-col items-center gap-8'>
-        {useCreateSection(router)}{' '}
+        {useCreateSection(router)}
       </ul>
     </>
   );
