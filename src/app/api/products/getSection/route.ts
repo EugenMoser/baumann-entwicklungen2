@@ -29,8 +29,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('getSection ausgeführt');
+
     return NextResponse.json({ data: productCategory });
-  } catch (err) {
+  } catch (error) {
     return NextResponse.error();
   } finally {
     await prisma.$disconnect();
