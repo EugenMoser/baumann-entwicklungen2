@@ -44,3 +44,11 @@ export interface CategoryProps {
   product_description1: string;
   product_imagepath_small: string;
 }
+
+export interface BlobProps {
+  url: string;
+  downloaderUrl: string;
+  pathname: string;
+  size: number;
+  uploadedAt: string;
+}
