@@ -12,9 +12,8 @@ interface ProductCategoryProps {
   params: { category: string };
 }
 
-const getProductSection = async (
-  category: string
-): Promise<CategoryProps[]> => {
+//todo Funktion z,B, in src/service/categoryService.ts auslagern
+const getCategory = async (category: string): Promise<CategoryProps[]> => {
   const response: any = await fetch(getSection, {
     method: 'POST',
     body: JSON.stringify({ category: `${category}` }),
@@ -23,12 +22,12 @@ const getProductSection = async (
     },
     cache: 'force-cache',
   });
+
   if (!response.ok) {
     throw new Error(`Failed to fetch categories: ${response.statusText}`);
   }
 
   const { data } = await response.json();
-  console.log('Fetched CATEGORY', data);
   return data;
 };
 
@@ -37,8 +36,8 @@ async function ProductCategory({
 }: ProductCategoryProps): Promise<JSX.Element> {
   const { category } = params;
 
-  // fetch the category products
-  const products = await getProductSection(category);
+  // fetch the all products with the given category
+  const products = await getCategory(category);
 
   // find the category name for the title
   const categoryData = sections.find(

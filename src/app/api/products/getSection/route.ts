@@ -6,7 +6,7 @@ import { prisma } from '@/db/client';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
-  const { category } = await request.json();
+  const { category } = (await request.json()) as { category: string };
 
   if (!category) {
     return NextResponse.json(
@@ -28,8 +28,6 @@ export async function POST(request: NextRequest) {
         category: category,
       },
     });
-
-    console.log('getSection ausgeführt');
 
     return NextResponse.json({ data: productCategory });
   } catch (error) {
