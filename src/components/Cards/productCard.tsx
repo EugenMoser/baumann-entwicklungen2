@@ -1,9 +1,11 @@
+import { Suspense } from 'react';
+
 import Image from 'next/image';
 
 import { getThumbnails } from '@/lib/endpoints';
 import { CategoryProps } from '@/src/common/types';
 
-interface ProductButtonProps {
+interface ProductCardProps {
   product: CategoryProps;
 }
 
@@ -25,21 +27,22 @@ const getProductThumbnails = async (thumbnailFullName: string) => {
 };
 async function ProductButton({
   product,
-}: ProductButtonProps): Promise<React.JSX.Element> {
+}: ProductCardProps): Promise<React.JSX.Element> {
   // fetch the product thumbnail
   const url = await getProductThumbnails(product.product_imagepath_small);
   return (
     <button>
       <p>{product.product_id}</p>
-
-      <Image
-        src={url}
-        alt={`Bild von ${product.product_name}`}
-        placeholder='empty'
-        width={80}
-        height={80}
-        loading='lazy'
-      />
+      <Suspense fallback={<h2>Loading Image...</h2>}>
+        <Image
+          src={url}
+          alt={`Bild von ${product.product_name}`}
+          placeholder='empty'
+          width={80}
+          height={80}
+          loading='lazy'
+        />
+      </Suspense>
     </button>
   );
 }

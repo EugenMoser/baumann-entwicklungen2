@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    console.log('blobs THUMBNAILS SERVER', blobs.blobs);
 
     return NextResponse.json(blobs.blobs);
   } catch (error) {

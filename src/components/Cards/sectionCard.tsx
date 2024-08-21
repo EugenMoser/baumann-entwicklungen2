@@ -4,7 +4,7 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 
 import Icon from '@mdi/react';
 
-interface SectionButtonProps {
+interface SectionCardProps {
   section: {
     category: string;
     name: string;
@@ -13,10 +13,7 @@ interface SectionButtonProps {
   router: AppRouterInstance;
 }
 
-function SectionButton({
-  section,
-  router,
-}: SectionButtonProps): JSX.Element {
+function SectionCard({ section, router }: SectionCardProps): JSX.Element {
   function onClickHandler(
     category: string
   ): MouseEventHandler<HTMLButtonElement> | undefined {
@@ -42,4 +39,4 @@ function SectionButton({
   );
 }
 
-export default SectionButton;
+export default SectionCard;

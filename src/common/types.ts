@@ -52,3 +52,17 @@ export interface BlobProps {
   size: number;
   uploadedAt: string;
 }
+
+export interface ImagesArrayProps {
+  original: string;
+  thumbnail: string;
+  originalAlt: string;
+}
+
+export interface DescriptionSectionProps {
+  description2?: string;
+  description3?: string;
+  description4?: string;
+  material?: string;
+  images?: ImagesArrayProps[];
+}
