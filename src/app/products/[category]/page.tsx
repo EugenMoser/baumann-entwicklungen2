@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
 import { getSection } from '@/lib/endpoints';
-import ProductButton from '@/src/components/Buttons/productButton';
+import ProductCard from '@/src/components/Cards/productCard';
 import { sections } from '@/src/constants/sections';
 
 import { CategoryProps } from '../../../common/types';
@@ -14,7 +14,7 @@ interface ProductCategoryProps {
 
 //todo Funktion z,B, in src/service/categoryService.ts auslagern
 const getCategory = async (category: string): Promise<CategoryProps[]> => {
-  const response: any = await fetch(getSection, {
+  const response: Response = await fetch(getSection, {
     method: 'POST',
     body: JSON.stringify({ category: `${category}` }),
     headers: {
@@ -57,7 +57,7 @@ async function ProductCategory({
         <ul>
           {products.map((product: CategoryProps, index: number) => (
             <li key={index}>
-              <ProductButton product={product} />
+              <ProductCard product={product} />
             </li>
           ))}
         </ul>

@@ -3,12 +3,11 @@ import { NextResponse } from 'next/server';
 
 import { prisma } from '@/db/client';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 export async function POST(request: NextRequest) {
   try {
     const { productId } = await request.json();
     const convertedProductId: number = Number(productId);
-    console.log(':-) ID Server', convertedProductId);
 
     // validation
     if (!convertedProductId) {
@@ -82,10 +81,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('product SERVER', cleanedProduct);
     return NextResponse.json({ data: cleanedProduct });
   } catch (err) {
-    console.error('ERRORORORRO', err);
     return NextResponse.error();
   } finally {
     prisma.$disconnect();
