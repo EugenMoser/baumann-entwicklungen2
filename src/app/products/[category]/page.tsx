@@ -1,43 +1,29 @@
-import { Suspense } from 'react';
-
+'use client';
 import { notFound } from 'next/navigation';
+import useSWR from 'swr';
 
-import { getSection } from '@/lib/endpoints';
+import { getCategory } from '@/lib/endpoints';
+import fetcherCategory from '@/lib/services/fetchCategory';
+import { CategoryProps } from '@/src/common/types';
 import ProductCard from '@/src/components/Cards/productCard';
 import { sections } from '@/src/constants/sections';
-
-import { CategoryProps } from '../../../common/types';
 
 interface ProductCategoryProps {
   params: { category: string };
 }
 
-//todo Funktion z,B, in src/service/categoryService.ts auslagern
-const getCategory = async (category: string): Promise<CategoryProps[]> => {
-  const response: Response = await fetch(getSection, {
-    method: 'POST',
-    body: JSON.stringify({ category: `${category}` }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'force-cache',
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch categories: ${response.statusText}`);
-  }
-
-  const { data } = await response.json();
-  return data;
-};
-
-async function ProductCategory({
-  params,
-}: ProductCategoryProps): Promise<JSX.Element> {
+function ProductCategory({ params }: ProductCategoryProps): JSX.Element {
   const { category } = params;
 
   // fetch the all products with the given category
-  const products = await getCategory(category);
+  const {
+    data: products,
+    error,
+    isLoading,
+  } = useSWR([getCategory, category], ([url, category]) =>
+    fetcherCategory(url, category)
+  );
+  console.log('products', products);
 
   // find the category name for the title
   const categoryData = sections.find(
@@ -46,22 +32,24 @@ async function ProductCategory({
   const categoryName = categoryData ? categoryData.name : '';
 
   // if no products are found, return 404
-  if (!products) {
+  if (error) {
     notFound();
+  }
+  if (isLoading) {
+    return <h2>Loading Products...</h2>;
   }
 
   return (
     <main>
       <h1>Produktbereich {categoryName} </h1>
-      <Suspense fallback={<h2>Loading...</h2>}>
-        <ul>
-          {products.map((product: CategoryProps, index: number) => (
+      <ul>
+        {products &&
+          products.map((product: CategoryProps, index: number) => (
             <li key={index}>
               <ProductCard product={product} />
             </li>
           ))}
-        </ul>
-      </Suspense>
+      </ul>
     </main>
   );
 }

@@ -1,58 +1,19 @@
 'use client';
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 
 import { notFound } from 'next/navigation';
 import useSWR from 'swr';
 
-import {
-  getProductDetails,
-  getProductImages,
-} from '@/lib/endpoints';
-import {
-  ImagesArrayProps,
-  ProductProps,
-} from '@/src/common/types';
+import { getProductDetails, getProductImages } from '@/lib/endpoints';
+import fetcherDetails from '@/lib/services/fetchDetails';
+import fetcherImages from '@/lib/services/fetchImages';
+import { ImagesArrayProps, ProductProps } from '@/src/common/types';
 import ProductDescription from '@/src/container/ProductSections/description';
 import Article from '@/src/container/ProductSections/ProductVariant/articles';
 
 interface ProductDetailsProps {
   params: { id: number };
 }
-
-const fetcherDetails = async (url: string, id: number) => {
-  const response: Response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify({ productId: id }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch product details ${response.statusText}`
-    );
-  }
-  const { data } = await response.json();
-  return data;
-};
-
-const fetcherImage = async (url: string, imageName: string) => {
-  const response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify({ imageName: imageName.split('.')[0] }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!response.ok) {
-    throw new Error(`Failed to fetch image ${response.statusText}`);
-  }
-  const data = await response.json();
-  return data;
-};
 
 function ProductDetails({ params }: ProductDetailsProps): JSX.Element {
   const numberId: number = Number(params.id);
@@ -81,13 +42,12 @@ function ProductDetails({ params }: ProductDetailsProps): JSX.Element {
     imageArray.length ? [getProductImages, imageArray] : null,
     async ([url, imageArray]) => {
       const fetchedImages: string[] = await Promise.all(
-        imageArray.map((image) => fetcherImage(url, image))
+        imageArray.map((image) => fetcherImages(url, image))
       );
       //if no images are found, return placeholder image
       return fetchedImages.length > 0 ? fetchedImages : placeholderImage;
     }
   );
-  console.log('imagesData', imagesData);
   useEffect(() => {
     if (imagesData) {
       setImageUrls(imagesData);
@@ -138,6 +98,7 @@ function ProductDetails({ params }: ProductDetailsProps): JSX.Element {
       {description1 && <p>{description1}</p>}
       <ProductDescription descriptionSection={descriptionSection} />
       <Article articleSection={productData?.article} />
+      {/*! todo:  <Color /> */}
     </main>
   );
 }

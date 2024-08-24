@@ -1,38 +1,32 @@
+'use client';
 import { Suspense } from 'react';
 
 import Image from 'next/image';
+import useSWR from 'swr';
 
 import { getThumbnails } from '@/lib/endpoints';
+import fetcherThumbnails from '@/lib/services/fetchThumbnails';
 import { CategoryProps } from '@/src/common/types';
 
 interface ProductCardProps {
   product: CategoryProps;
 }
 
-const getProductThumbnails = async (thumbnailFullName: string) => {
-  const response: any = await fetch(getThumbnails, {
-    method: 'POST',
-    body: JSON.stringify({ thumbnailName: `${thumbnailFullName}` }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'force-cache',
-  });
-  if (!response.ok) {
-    throw new Error(`Failed to fetch thumbnail: ${response.statusText}`);
-  }
+function ProductButton({ product }: ProductCardProps): React.JSX.Element {
+  const {
+    data: url,
+    error,
+    isLoading,
+  } = useSWR(
+    [getThumbnails, product.product_imagepath_small],
+    ([url, thumbnailName]) => fetcherThumbnails(url, thumbnailName)
+  );
 
-  const data = await response.json();
-  return data[0].url;
-};
-async function ProductButton({
-  product,
-}: ProductCardProps): Promise<React.JSX.Element> {
-  // fetch the product thumbnail
-  const url = await getProductThumbnails(product.product_imagepath_small);
   return (
-    <button>
-      <p>{product.product_id}</p>
+    <button className='border-4'>
+      <h1>{product.product_name}</h1>
+      <p>{product.product_description1}</p>
+
       <Suspense fallback={<h2>Loading Image...</h2>}>
         <Image
           src={url}
