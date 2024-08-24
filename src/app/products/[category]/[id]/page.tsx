@@ -1,12 +1,22 @@
 'use client';
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 
 import { notFound } from 'next/navigation';
 import useSWR from 'swr';
 
-import { getProductDetails, getProductImages } from '@/lib/endpoints';
-import { ImagesArrayProps, Product } from '@/src/common/types';
+import {
+  getProductDetails,
+  getProductImages,
+} from '@/lib/endpoints';
+import {
+  ImagesArrayProps,
+  ProductProps,
+} from '@/src/common/types';
 import ProductDescription from '@/src/container/ProductSections/description';
+import Article from '@/src/container/ProductSections/ProductVariant/articles';
 
 interface ProductDetailsProps {
   params: { id: number };
@@ -103,7 +113,7 @@ function ProductDetails({ params }: ProductDetailsProps): JSX.Element {
     product_description3: description3,
     product_description4: description4,
     product_material: material,
-  } = productData as Product;
+  } = productData as ProductProps;
 
   const formattedImages: ImagesArrayProps[] = imageUrls.map(
     (imageUrl: string) => ({
@@ -121,12 +131,13 @@ function ProductDetails({ params }: ProductDetailsProps): JSX.Element {
     imageIsLoading,
     images: formattedImages,
   };
-  console.log('formattedImages', formattedImages);
+
   return (
     <main>
       <h1>{name}</h1>
       {description1 && <p>{description1}</p>}
       <ProductDescription descriptionSection={descriptionSection} />
+      <Article articleSection={productData?.article} />
     </main>
   );
 }

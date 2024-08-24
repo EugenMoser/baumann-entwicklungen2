@@ -1,4 +1,4 @@
-export interface Product {
+export interface ProductProps {
   product_id: number;
   category: string;
   product_name: string;
@@ -11,11 +11,11 @@ export interface Product {
   product_imagepath_big1: string;
   product_imagepath_big2?: string;
   product_imagepath_big3?: string;
-  article: Article[];
-  colors: Color[];
+  article: ArticleProps[];
+  colors: ColorProps[];
 }
 
-export interface Article {
+export interface ArticleProps {
   article_id: number;
   article_number: string;
   article_prio: number;
@@ -30,7 +30,7 @@ export interface Article {
   vpe4?: string;
 }
 
-export interface Color {
+export interface ColorProps {
   color_id: string;
   color_name: string;
   color_code: string;

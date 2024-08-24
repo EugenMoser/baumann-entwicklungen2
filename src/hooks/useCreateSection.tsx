@@ -2,7 +2,7 @@
 
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-import SectionButton from '../components/Buttons/sectionButton';
+import SectionCard from '../components/Cards/sectionCard';
 import { sections } from '../constants/sections';
 
 export function useCreateSection(
@@ -14,7 +14,7 @@ export function useCreateSection(
         key={index}
         className='border-none'
       >
-        <SectionButton
+        <SectionCard
           section={section}
           router={router}
         />
